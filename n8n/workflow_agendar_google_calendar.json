@@ -1,0 +1,57 @@
+{
+  "name": "Agendar Reuni\u00e3o - Google Calendar",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "schedule_meeting",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        300,
+        300
+      ],
+      "webhookId": "schedule_meeting"
+    },
+    {
+      "parameters": {
+        "calendar": "primary",
+        "start": "={{$json[\"date\"]}} {{$json[\"time\"]}}",
+        "end": "={{$json[\"date\"]}} {{$json[\"time\"]}}",
+        "additionalFields": {
+          "summary": "={{$json[\"title\"] || 'Reuni\u00e3o'}}",
+          "description": "={{$json[\"description\"] || 'Agendado via bot'}}",
+          "attendees": "={{$json[\"attendeeEmail\"] ? [$json[\"attendeeEmail\"]] : []}}",
+          "useDefaultReminders": true,
+          "duration": "={{$json[\"durationMin\"] || 60}}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 3,
+      "position": [
+        600,
+        300
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "<SEU-CREDENCIAL-ID>",
+          "name": "Google OAuth"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

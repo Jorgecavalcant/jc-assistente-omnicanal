@@ -1,0 +1,41 @@
+{
+  "name": "Resolver Arquivo",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "resolve_file"
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        300,
+        300
+      ],
+      "webhookId": "resolve_file"
+    },
+    {
+      "parameters": {
+        "functionCode": "const map = {\\n  'apresentacao': 'apresentacao.pdf',\\n  'ebook-diagnostico': 'ebook_diagnostico.pdf',\\n  'proposta-modelo': 'proposta_modelo.pdf'\\n};\\nconst key = ($json.key || '').toLowerCase();\\nconst base = $env.PUBLIC_FILES_BASE_URL;\\nreturn [{ json: { url: base + '/' + encodeURIComponent(map[key] || '') } }];"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 2,
+      "position": [
+        600,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
